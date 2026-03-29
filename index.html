@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toybur - কাজ সাবমিশন</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; }
+        .view { display: none; }
+        .active { display: block; }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white min-h-screen">
+
+    <!-- HOME VIEW -->
+    <div id="home-view" class="view active flex items-center justify-center min-h-screen">
+        <div class="text-center max-w-md mx-auto px-6">
+            <h1 class="text-5xl font-bold mb-2 text-emerald-400">Toybur</h1>
+            <p class="text-zinc-400 mb-12 text-xl">আপনার দৈনিক কাজের প্ল্যাটফর্ম</p>
+            
+            <div class="grid grid-cols-2 gap-6">
+                <!-- Admin Button -->
+                <button onclick="showAdminLogin()" 
+                        class="bg-white text-zinc-900 hover:bg-emerald-400 hover:text-white font-semibold text-2xl py-12 rounded-3xl shadow-2xl transition-all">
+                    👑<br>অ্যাডমিন
+                </button>
+                
+                <!-- User Button -->
+                <button onclick="showUserView()" 
+                        class="bg-white text-zinc-900 hover:bg-emerald-400 hover:text-white font-semibold text-2xl py-12 rounded-3xl shadow-2xl transition-all">
+                    👤<br>ইউজার
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN VIEW -->
+    <div id="admin-login-view" class="view">
+        <div class="max-w-sm mx-auto mt-20 bg-zinc-900 p-8 rounded-3xl shadow-2xl">
+            <h2 class="text-3xl font-bold text-center mb-8">অ্যাডমিন লগইন</h2>
+            <form onsubmit="handleAdminLogin(event)">
+                <div class="mb-6">
+                    <label class="block text-zinc-400 mb-2">ইউজারনেম</label>
+                    <input type="text" id="admin-username" 
+                           class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-lg focus:outline-none focus:border-emerald-400"
+                           placeholder="devoloper toybur" required>
+                </div>
+                <div class="mb-8">
+                    <label class="block text-zinc-400 mb-2">পাসওয়ার্ড</label>
+                    <input type="password" id="admin-password" 
+                           class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-lg focus:outline-none focus:border-emerald-400"
+                           placeholder="devoloper toybur" required>
+                </div>
+                <button type="submit"
+                        class="w-full bg-emerald-500 hover:bg-emerald-600 py-5 rounded-3xl text-xl font-semibold transition">
+                    লগইন করুন
+                </button>
+            </form>
+            <button onclick="showHome()" class="mt-6 text-zinc-400 hover:text-white text-sm">← হোমে ফিরুন</button>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD -->
+    <div id="admin-dashboard-view" class="view">
+        <div class="max-w-6xl mx-auto p-6">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-4xl font-bold">👑 অ্যাডমিন ড্যাশবোর্ড</h2>
+                <div>
+                    <button onclick="logoutAdmin()" 
+                            class="bg-red-500 hover:bg-red-600 px-6 py-3 rounded-3xl text-sm font-medium">লগআউট</button>
+                    <button onclick="showHome()" 
+                            class="ml-4 bg-zinc-700 hover:bg-zinc-600 px-6 py-3 rounded-3xl text-sm font-medium">হোমে ফিরুন</button>
+                </div>
+            </div>
+            
+            <div id="submissions-list" class="space-y-6"></div>
+        </div>
+    </div>
+
+    <!-- USER VIEW -->
+    <div id="user-view" class="view">
+        <div class="max-w-5xl mx-auto p-6">
+            <!-- Header -->
+            <div class="flex justify-between mb-8">
+                <h2 id="user-header" class="text-4xl font-bold">ইউজার পোর্টাল</h2>
+                <button onclick="showHome()" class="text-zinc-400 hover:text-white">← হোমে ফিরুন</button>
+            </div>
+
+            <!-- Not Logged In -->
+            <div id="user-not-logged" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Register -->
+                <div class="bg-zinc-900 p-8 rounded-3xl">
+                    <h3 class="text-2xl font-semibold mb-6">রেজিস্ট্রেশন</h3>
+                    <form onsubmit="handleRegister(event)">
+                        <input type="text" id="reg-name" placeholder="আপনার নাম" 
+                               class="w-full mb-4 bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4" required>
+                        <input type="email" id="reg-email" placeholder="জিমেইল" 
+                               class="w-full mb-4 bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4" required>
+                        <input type="password" id="reg-pass" placeholder="পাসওয়ার্ড" 
+                               class="w-full mb-4 bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4" required>
+                        <input type="password" id="reg-confirm" placeholder="কনফার্ম পাসওয়ার্ড" 
+                               class="w-full mb-6 bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4" required>
+                        <button type="submit" 
+                                class="w-full bg-emerald-500 hover:bg-emerald-600 py-5 rounded-3xl text-xl font-semibold">রেজিস্টার করুন</button>
+                    </form>
+                </div>
+
+                <!-- Login -->
+                <div class="bg-zinc-900 p-8 rounded-3xl">
+                    <h3 class="text-2xl font-semibold mb-6">লগইন</h3>
+                    <form onsubmit="handleLogin(event)">
+                        <input type="email" id="login-email" placeholder="জিমেইল" 
+                               class="w-full mb-4 bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4" required>
+                        <input type="password" id="login-pass" placeholder="পাসওয়ার্ড" 
+                               class="w-full mb-6 bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4" required>
+                        <button type="submit" 
+                                class="w-full bg-emerald-500 hover:bg-emerald-600 py-5 rounded-3xl text-xl font-semibold">লগইন করুন</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- User Dashboard (Logged In) -->
+            <div id="user-dashboard" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="welcome-text" class="text-3xl font-semibold"></h3>
+                    <button onclick="logoutUser()" class="bg-red-500 hover:bg-red-600 px-8 py-3 rounded-3xl">লগআউট</button>
+                </div>
+
+                <!-- Submit Form -->
+                <div class="bg-zinc-900 p-8 rounded-3xl mb-10">
+                    <h4 class="text-2xl font-semibold mb-6">আজকের কাজের ডকুমেন্ট সাবমিট করুন</h4>
+                    <form onsubmit="handleSubmitDocument(event)">
+                        <input type="text" id="doc-title" placeholder="কাজের শিরোনাম" 
+                               class="w-full mb-4 bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4" required>
+                        <textarea id="doc-desc" rows="4" placeholder="কাজের বিস্তারিত বিবরণ" 
+                                  class="w-full mb-6 bg-zinc-800 border border-zinc-700 rounded-3xl px-5 py-4"></textarea>
+                        
+                        <div class="mb-6">
+                            <label class="block text-zinc-400 mb-3">ডকুমেন্ট ফাইল আপলোড করুন</label>
+                            <input type="file" id="doc-file" accept=".pdf,.doc,.docx,.jpg,.png,.txt"
+                                   class="block w-full text-sm text-zinc-400 file:mr-4 file:py-3 file:px-6 file:rounded-2xl file:border-0 file:bg-emerald-500 file:text-white hover:file:bg-emerald-600">
+                        </div>
+                        
+                        <button type="submit" 
+                                class="w-full bg-emerald-500 hover:bg-emerald-600 py-5 rounded-3xl text-xl font-semibold">
+                            সাবমিট করুন
+                        </button>
+                    </form>
+                </div>
+
+                <!-- My Submissions -->
+                <h4 class="text-xl font-semibold mb-4">আমার সাবমিট করা কাজসমূহ</h4>
+                <div id="my-submissions" class="space-y-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let users = [];
+        let submissions = [];
+        let currentUser = null;
+        let isAdminLoggedIn = false;
+
+        function loadData() {
+            users = JSON.parse(localStorage.getItem('users')) || [];
+            submissions = JSON.parse(localStorage.getItem('submissions')) || [];
+        }
+
+        function saveData() {
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('submissions', JSON.stringify(submissions));
+        }
+
+        function showHome() {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('home-view').classList.add('active');
+            currentUser = null;
+            isAdminLoggedIn = false;
+        }
+
+        function showAdminLogin() {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('admin-login-view').classList.add('active');
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('admin-username').value.trim();
+            const password = document.getElementById('admin-password').value.trim();
+            
+            if (username === 'toybur666' && password === 'toybur666') {
+                isAdminLoggedIn = true;
+                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+                document.getElementById('admin-dashboard-view').classList.add('active');
+                renderAdminSubmissions();
+            } else {
+                alert('❌ ভুল ইউজারনেম বা পাসওয়ার্ড! দুটোই toybur666 হতে হবে।');
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            showHome();
+        }
+
+        function renderAdminSubmissions() {
+            const container = document.getElementById('submissions-list');
+            container.innerHTML = `<h3 class="text-2xl font-semibold mb-6">সকল ইউজারের সাবমিশন (${submissions.length})</h3>`;
+            
+            if (submissions.length === 0) {
+                container.innerHTML += `<p class="text-zinc-400 text-center py-12">এখনো কোনো কাজ সাবমিট হয়নি</p>`;
+                return;
+            }
+
+            submissions.forEach(sub => {
+                const div = document.createElement('div');
+                div.className = "bg-zinc-900 rounded-3xl p-6 flex flex-col md:flex-row justify-between items-start gap-6";
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3">
+                            <span class="text-emerald-400">👤</span>
+                            <div>
+                                <p class="font-semibold">${sub.userName}</p>
+                                <p class="text-sm text-zinc-400">${sub.userEmail}</p>
+                            </div>
+                        </div>
+                        <p class="text-xl font-medium mt-4">${sub.title}</p>
+                        <p class="text-zinc-300 mt-2">${sub.description || 'কোনো বিবরণ নেই'}</p>
+                        <p class="text-xs text-zinc-500 mt-4">${new Date(sub.timestamp).toLocaleString('bn-BD')}</p>
+                    </div>
+                    <div class="flex flex-col items-end gap-3">
+                        ${sub.file ? `
+                            <a href="\( {sub.file.data}" download=" \){sub.file.name}" 
+                               class="bg-emerald-500 hover:bg-emerald-600 px-8 py-3 rounded-3xl text-sm font-medium inline-flex items-center gap-2">
+                                📥 ডাউনলোড ফাইল
+                            </a>
+                            <p class="text-xs text-zinc-400">${sub.file.name}</p>
+                        ` : `<p class="text-amber-400 text-sm">কোনো ফাইল নেই</p>`}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function showUserView() {
+            loadData();
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('user-view').classList.add('active');
+            
+            if (currentUser) {
+                showUserDashboard();
+            } else {
+                document.getElementById('user-not-logged').classList.remove('hidden');
+                document.getElementById('user-dashboard').classList.add('hidden');
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+            const confirm = document.getElementById('reg-confirm').value;
+
+            if (pass !== confirm) {
+                alert('❌ পাসওয়ার্ড মিলছে না!');
+                return;
+            }
+            if (users.find(u => u.email === email)) {
+                alert('❌ এই জিমেইল দিয়ে আগেই রেজিস্টার করা হয়েছে!');
+                return;
+            }
+
+            const newUser = {
+                id: Date.now(),
+                name: name,
+                email: email,
+                password: pass
+            };
+            users.push(newUser);
+            saveData();
+            
+            alert('✅ রেজিস্ট্রেশন সফল! এখন লগইন করুন।');
+            // Clear form
+            e.target.reset();
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-pass').value;
+
+            const user = users.find(u => u.email === email && u.password === pass);
+            if (user) {
+                currentUser = user;
+                showUserDashboard();
+            } else {
+                alert('❌ জিমেইল বা পাসওয়ার্ড ভুল!');
+            }
+        }
+
+        function showUserDashboard() {
+            document.getElementById('user-not-logged').classList.add('hidden');
+            const dash = document.getElementById('user-dashboard');
+            dash.classList.remove('hidden');
+            
+            document.getElementById('welcome-text').innerHTML = `
+                স্বাগতম, <span class="text-emerald-400">${currentUser.name}</span> 👋
+            `;
+            
+            renderMySubmissions();
+        }
+
+        function logoutUser() {
+            currentUser = null;
+            showUserView();
+        }
+
+        function handleSubmitDocument(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const title = document.getElementById('doc-title').value.trim();
+            const desc = document.getElementById('doc-desc').value.trim();
+            const fileInput = document.getElementById('doc-file');
+            const file = fileInput.files[0];
+
+            const submission = {
+                id: Date.now(),
+                userId: currentUser.id,
+                userName: currentUser.name,
+                userEmail: currentUser.email,
+                title: title,
+                description: desc,
+                timestamp: new Date().toISOString(),
+                file: null
+            };
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    submission.file = {
+                        name: file.name,
+                        type: file.type,
+                        data: ev.target.result
+                    };
+                    submissions.push(submission);
+                    saveData();
+                    alert('✅ ডকুমেন্ট সফলভাবে সাবমিট হয়েছে!');
+                    renderMySubmissions();
+                    // Clear form
+                    e.target.reset();
+                };
+                reader.readAsDataURL(file);
+            } else {
+                submissions.push(submission);
+                saveData();
+                alert('✅ ডকুমেন্ট সফলভাবে সাবমিট হয়েছে!');
+                renderMySubmissions();
+                e.target.reset();
+            }
+        }
+
+        function renderMySubmissions() {
+            const container = document.getElementById('my-submissions');
+            const mySubs = submissions.filter(s => s.userEmail === currentUser.email);
+            
+            if (mySubs.length === 0) {
+                container.innerHTML = `<p class="text-zinc-400 text-center py-8">আপনি এখনো কোনো কাজ সাবমিট করেননি</p>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            mySubs.forEach(sub => {
+                const div = document.createElement('div');
+                div.className = "bg-zinc-800 rounded-3xl p-6";
+                div.innerHTML = `
+                    <div class="flex justify-between">
+                        <div>
+                            <p class="font-semibold text-lg">${sub.title}</p>
+                            <p class="text-zinc-300 text-sm mt-1">${sub.description || 'বিবরণ নেই'}</p>
+                            <p class="text-xs text-zinc-500 mt-4">${new Date(sub.timestamp).toLocaleString('bn-BD')}</p>
+                        </div>
+                        ${sub.file ? `
+                            <a href="\( {sub.file.data}" download=" \){sub.file.name}" 
+                               class="text-emerald-400 hover:text-emerald-300 self-start text-sm flex items-center gap-1">
+                                📥 ডাউনলোড
+                            </a>` : ''}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Initialize
+        window.onload = function() {
+            loadData();
+            console.log('%c✅ Toybur ওয়েবসাইট লোড হয়েছে!', 'color: #10b981; font-size: 16px');
+        };
+    </script>
+</body>
+</html>
